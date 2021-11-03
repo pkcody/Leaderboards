@@ -10,8 +10,8 @@ public class PlayerController : MonoBehaviour
     private float startTime;
     private float timeTaken;
     private int collectablesPicked;
-    public int maxCollectables = 10;
-    private bool isPlaying;
+    public int maxCollectables = 4;
+    private bool isPlaying = false;
     public GameObject playButton;
     public TextMeshProUGUI curTimeText;
 
@@ -23,15 +23,15 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (!isPlaying)
+            return;
+
         float x = Input.GetAxis("Horizontal") * speed;
         float z = Input.GetAxis("Vertical") * speed;
 
         rig.velocity = new Vector3(x, rig.velocity.y, z);
 
         curTimeText.text = (Time.time - startTime).ToString("F2");
-        if (!isPlaying)
-            return;
-
     }
 
     void OnTriggerEnter(Collider other)
@@ -39,14 +39,22 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Collectable"))
         {
             collectablesPicked++;
+            Debug.Log(collectablesPicked);
+
             Destroy(other.gameObject);
             if (collectablesPicked == maxCollectables)
+            {
+                Debug.Log("S");
                 End();
+                Debug.Log("E");
+
+            }
         }
     }
 
     public void Begin()
     {
+        Debug.Log("begining!");
         startTime = Time.time;
         isPlaying = true;
         playButton.SetActive(false);

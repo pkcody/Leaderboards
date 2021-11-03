@@ -51,7 +51,9 @@ public class Leaderboard : MonoBehaviour
             FunctionParameter = new { score = newScore }
         };
         PlayFabClientAPI.ExecuteCloudScript(request,
-         result => DisplayLeaderboard(),
+         result => {
+             DisplayLeaderboard();
+             },
          error => Debug.Log(error.ErrorMessage)
         );
     }
