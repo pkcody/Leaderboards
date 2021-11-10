@@ -17,8 +17,6 @@ public class PlayerController : MonoBehaviour
 
     public float timesPunched;
 
-
-
     void Awake()
     {
         rig = GetComponent<Rigidbody>();
@@ -29,15 +27,11 @@ public class PlayerController : MonoBehaviour
         if (!isPlaying)
             return;
 
-        if (timer <= 0f)
+        if (timer < 0f)
         {
-            Debug.Log("in");
+            timer = 0;
             End();
-            Debug.Log("after");
-
         }
-        //float x = Input.GetAxis("Horizontal") * speed;
-        //float z = Input.GetAxis("Vertical");
 
         if (Input.GetButtonDown("Vertical"))
         {
@@ -45,8 +39,7 @@ public class PlayerController : MonoBehaviour
             rig.AddForce(new Vector3(0f, 0f, 75f));
         }
 
-        //rig.velocity = new Vector3(x, rig.velocity.y, z);
-        if (timer >= 0)
+        if (timer > 0)
         {
             timer -= Time.deltaTime;
         }
@@ -85,6 +78,5 @@ public class PlayerController : MonoBehaviour
         playButton.SetActive(true);
         Debug.Log(totalCollectables);
         Leaderboard.instance.SetLeaderboardEntry(totalCollectables);
-
     }
 }
