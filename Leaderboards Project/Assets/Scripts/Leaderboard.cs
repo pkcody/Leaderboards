@@ -23,7 +23,7 @@ public class Leaderboard : MonoBehaviour
     {
         GetLeaderboardRequest getLeaderboardRequest = new GetLeaderboardRequest
         {
-            StatisticName = "FastestTime",
+            StatisticName = "MostCollectables",
             MaxResultsCount = 10
         };
         PlayFabClientAPI.GetLeaderboard(getLeaderboardRequest,
@@ -39,7 +39,7 @@ public class Leaderboard : MonoBehaviour
             leaderboardEntries[x].SetActive(x < leaderboard.Count);
             if (x >= leaderboard.Count) continue;
             leaderboardEntries[x].transform.Find("PlayerName").GetComponent<TextMeshProUGUI>().text = (leaderboard[x].Position + 1) + ". " + leaderboard[x].DisplayName;
-            leaderboardEntries[x].transform.Find("ScoreText").GetComponent<TextMeshProUGUI>().text = (-(float)leaderboard[x].StatValue * 0.001f).ToString("F2");
+            leaderboardEntries[x].transform.Find("ScoreText").GetComponent<TextMeshProUGUI>().text = ((float)leaderboard[x].StatValue).ToString();
         }
     }
 

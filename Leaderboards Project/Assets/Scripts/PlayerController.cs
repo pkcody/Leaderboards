@@ -7,13 +7,16 @@ public class PlayerController : MonoBehaviour
 {
     public float speed;
     private Rigidbody rig;
-    private float startTime;
-    private float timeTaken;
+    private float startTime = 10f;
+    private float timer;
     private int collectablesPicked;
-    public int maxCollectables = 4;
+    public int totalCollectables;
     private bool isPlaying = false;
     public GameObject playButton;
     public TextMeshProUGUI curTimeText;
+
+    public float timesPunched;
+
 
 
     void Awake()
@@ -26,13 +29,33 @@ public class PlayerController : MonoBehaviour
         if (!isPlaying)
             return;
 
-        float x = Input.GetAxis("Horizontal") * speed;
-        float z = Input.GetAxis("Vertical") * speed;
+        if (timer <= 0f)
+        {
+            Debug.Log("in");
+            End();
+            Debug.Log("after");
 
-        rig.velocity = new Vector3(x, rig.velocity.y, z);
+        }
+        //float x = Input.GetAxis("Horizontal") * speed;
+        //float z = Input.GetAxis("Vertical");
 
-        curTimeText.text = (Time.time - startTime).ToString("F2");
+        if (Input.GetButtonDown("Vertical"))
+        {
+            Debug.Log("up");
+            rig.AddForce(new Vector3(0f, 0f, 75f));
+        }
+
+        //rig.velocity = new Vector3(x, rig.velocity.y, z);
+        if (timer >= 0)
+        {
+            timer -= Time.deltaTime;
+        }
+
+        curTimeText.text = (timer).ToString("F2");
+
     }
+
+
 
     void OnTriggerEnter(Collider other)
     {
@@ -42,30 +65,26 @@ public class PlayerController : MonoBehaviour
             Debug.Log(collectablesPicked);
 
             Destroy(other.gameObject);
-            if (collectablesPicked == maxCollectables)
-            {
-                Debug.Log("S");
-                End();
-                Debug.Log("E");
-
-            }
         }
     }
 
     public void Begin()
     {
         Debug.Log("begining!");
-        startTime = Time.time;
+        timer = startTime;
         isPlaying = true;
         playButton.SetActive(false);
     }
 
     void End()
     {
-        timeTaken = Time.time - startTime;
+        Debug.Log("end");
+        rig.isKinematic = true;
+        totalCollectables = collectablesPicked;
         isPlaying = false;
         playButton.SetActive(true);
-        Leaderboard.instance.SetLeaderboardEntry(-Mathf.RoundToInt(timeTaken * 1000.0f));
+        Debug.Log(totalCollectables);
+        Leaderboard.instance.SetLeaderboardEntry(totalCollectables);
 
     }
 }
