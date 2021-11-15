@@ -1,6 +1,6 @@
 # Leaderboards
 
-https://pkcody.github.io/Leaderboards/
+https://pkcody.github.io/Leaderboards/ (SPAM 'W')
 
 Originally built a timed collecting game that stores and retrieves and displays best scores via cloud-bases persistent leaderboard. Implement server-side scripting to prevent client-side exploit.
 
